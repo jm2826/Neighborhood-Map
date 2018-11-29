@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            html,
+            body {
+                font-family: Arial, sans-serif;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #map {
+                bottom: 0px;
+                height: 100%;
+                left: 362px;
+                position: absolute;
+                right: 0px;
+            }
+
+
+        </style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <div id="list"></div>
+        <script>
+            var map;
+
+            // Create a new blank array for all the listings markers.
+            var markers = [];
+            
+            function initMap() {
+                //Consturctor creates a new map - only center and zoom are required.
+                map = new google.maps.Map(document.getElementById('map'), {
+                    center: {lat: 41.8781, lng: -87.6298},
+                    zoom: 13,
+                    mapTypeControl: false
+                });
+
+                /* These are the real estate listings that will be shown to the user.
+                   Normally we would use a database instead. */
+                 var locations = [
+                    {title: 'Millenium Park', location: {lat: 41.8826, lng: -87.6226}},
+                    {title: 'Navy Pier', location: {lat: 41.8917, lng: -87.6086}},
+                    {title: 'AT&T Corporate Building', location: {lat: 41.8841369, lng: -87.6350657}},
+                    {title: 'Solider Field', location: {lat: 41.8623, lng: -87.6167}},
+                    {title: 'Chicago Theater', location: {lat: 41.8854, lng: -87.6275}},
+                  ];
+                
+                 var largeInfowindow = new google.maps.InfoWindow();
+                 // Listings that are outside the initiale zoom areas. This fits everything we want user to see.
+                 var bounds = new google.maps.LatLngBounds();
+
+                 var ul = document.createElement('ul');
+
+                 document.getElementById('list').appendChild(ul);
+
+                 locations.forEach(function (item) {
+                     var li = document.createElement('li');
+                     ul.appendChild(li);
+
+                     li.innerHTML += item;
+
+                     return locations;
+                 });
+
+                //  // Make Unordered List of array locations
+                //  function makeUL(locations) {
+                //     var list = document.createElement('ul');
+
+                //     for (var i = 0; i < locations.length; i++) {
+                        
+                //         var item = document.createElement('li');
+                //         item.appendChild(document.createTextNode(locations[i]));
+                //         list.appendChild(item);
+                //     }
+
+                //     return list;
+                // }
+                // document.getElementById('list').appendChild(makeUL());
+
+                 // Creates a marker for each location the array loops through
+                 for (var i = 0; i < locations.length; i++) {
+                     // Get the position from the location array.
+                     var position = locations[i].location;
+                     var title = locations[i].title;
+                     // Create a marker per location, and put into markers array.
+                     var marker = new google.maps.Marker({
+                         map: map,
+                         position: position,
+                         title: title,
+                         animation: google.maps.Animation.DROP,
+                         id: i
+                     });
+                     // Push the marker to our array of markers.
+                     markers.push(marker);
+                     // Extend boundaries of the map for each marker
+                     bounds.extend(marker.position);
+                     // Create an onclick event to open an infowindow at each marker.
+                     marker.addListener('click', function() {
+                         populateInfoWindow(this, largeInfowindow);
+                     });
+                    }
+                }
+                    // Tell map to fit itself to the boundaries set
+                    map.fitBounds(bounds);
+
+                    // This function populates the infowindow when the marker is clicked. We'll only allow
+                    // one infowindow which will open at the marker that is clicked, and populate based
+                    // on that markers position.
+                    function populateInfoWindow(marker, infowindow) {
+                        // Check to make sure the infowindow is not already opened on this marker.
+                        if (infowindow.marker != marker) {
+                            infowindow.marker = marker;
+                            infowindow.setContent('<div>' + marker.title + '</div>');
+                            infowindow.open(map, marker);
+                            //Make sure the marker property is cleared if the infowindow is closed.
+                            infowindow.addListener('closeclick',function() {
+                                infowindow.marker(null);
+                            });
+
+                        }
+                    }
+                       
+            </script>
+
+            <script async defer
+              src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbsadpXTVkHIN-cnvhWDrjYAqN5iKW5LQ&v=3&callback=initMap">
+            </script>
+    </body>
+</html>
