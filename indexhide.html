@@ -72,13 +72,7 @@
         <div class="dropdown">
             <button onclick="dropdownFunction()"
             class="dropbtn">Filter Location</button>
-            <div id="myDropdown" class="dropdown-content">
-                <!-- <a id="MP" href="#MP" onclick="hideFunction()">Millenium Park</a>
-                <a id="AT" href="#AT">AT&T Corporate Building</a>
-                <a id="NP" href="#NP">Navy Pier</a>
-                <a id="SF" href="#SF">Soldier Field</a>
-                <a id="CT" href="#CT">Chicago Theater</a> -->
-            </div>
+            <div id="myDropdown" class="dropdown-content"></div>
         </div>
         <script>
             var map;
@@ -101,17 +95,7 @@
                     zoom: 13,
                     mapTypeControl: false
                 });
-
-                /* These are the real estate listings that will be shown to the user.
-                   Normally we would use a database instead. */
-                //  var locations = [
-                //     {title: 'Millenium Park', location: {lat: 41.8826, lng: -87.6226}},
-                //     {title: 'Navy Pier', location: {lat: 41.8917, lng: -87.6086}},
-                //     {title: 'AT&T Corporate Building', location: {lat: 41.8841369, lng: -87.6350657}},
-                //     {title: 'Solider Field', location: {lat: 41.8623, lng: -87.6167}},
-                //     {title: 'Chicago Theater', location: {lat: 41.8854, lng: -87.6275}},
-                //   ];
-                
+             
                  var largeInfowindow = new google.maps.InfoWindow();
                  // Listings that are outside the initiale zoom areas. This fits everything we want user to see.
                  var bounds = new google.maps.LatLngBounds();
@@ -151,9 +135,9 @@
                      });
                     }
 
-                }
                     // Tell map to fit itself to the boundaries set
                     map.fitBounds(bounds);
+                }
 
                     // This function populates the infowindow when the marker is clicked. We'll only allow
                     // one infowindow which will open at the marker that is clicked, and populate based
@@ -179,16 +163,6 @@
 
                     // Close dropdown menu if user clicks outside of it
                     window.onclick = function(e) {                                                
-                        // Loop through array to display list
-                        var dropList = document.getElementsByClassName("dropdown-content");
-
-                        for (var i = 0; i < locations.length; i++) {
-                            var opt = locations[i];
-                            var el = document.createElement("option");
-                            el.text = opt;
-                            el.value = opt.title;
-                            dropList.add(el);
-                        }
                         
                         if (!event.target.matches('.dropbtn')) {
                             var dropdowns = document.getElementsByClassName("dropdown-content");
@@ -200,6 +174,17 @@
                                 }
                             }
                         }                           
+                    }
+
+                    // Loop through array to display list
+                    var dropList = document.getElementsByClassName("dropdown-content")[0];
+
+                    for (var i = 0; i < locations.length; i++) {
+                        var opt = locations[i];
+                        var el = document.createElement("a");
+                        el.href = opt.title;
+                        el.text = opt.title;
+                        dropList.appendChild(el);
                     }
                 
     </script>
