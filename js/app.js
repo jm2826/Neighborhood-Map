@@ -1,16 +1,17 @@
-function ViewModel() { 
-        //
-        var self = this;
+var markers = [];
+//var location = [];
 
-        markers = ko.observableArray([]);
+function ViewModel() {
+
+        //var markers = ko.observableArray([]);
         // Chicago Map Loaded initally
-        map = new google.maps.Map(document.getElementById('map'), {
+        var map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: 41.8781, lng: -87.6298},
                 zoom: 13,
                 mapTypeControl: false
         });
-
-        this.locations = ko.observableArray([
+        // Array of 5 locations for markers
+        var locations = ko.observableArray([
                 {title: 'Millenium Park', location: {lat: 41.8826, lng: -87.6226}},
                 {title: 'Navy Pier', location: {lat: 41.8917, lng: -87.6086}},
                 {title: 'AT&T Corporate Building', location: {lat: 41.8841369, lng: -87.6350657}},
@@ -19,6 +20,7 @@ function ViewModel() {
         ]);
 
         largeInfowindow = new google.maps.InfoWindow();
+
         // Listings that are outside the initiale zoom areas. This fits everything we want user to see.
         bounds = new google.maps.LatLngBounds();
        
@@ -27,18 +29,18 @@ function ViewModel() {
         // Use div ided as list to append with my list
         document.getElementById('list').appendChild(ul);
        
-        // For loop that goes through each location and displays the title for my list
-        this.locations().forEach(function(e) {
+        // Foreach loop that goes through each location and displays the title for my list
+        locations().forEach(function(e) {
             var li =  document.createElement('li');
             ul.appendChild(li);
 
             li.innerHTML += e.title;
         });
 
-        for (var i = 0; i < this.locations().length; i++) {
+        for (var i = 0; i < locations().length; i++) {
             // Get the position from the location array.
-            var position = this.locations()[i].location;
-            var title = this.locations()[i].title;
+            var position = locations()[i].location;
+            var title = locations()[i].title;
             // Create a marker per location, and put into markers array.
             var marker = new google.maps.Marker({
                 map: map,
@@ -47,8 +49,10 @@ function ViewModel() {
                 animation: google.maps.Animation.DROP,
                 id: i
             });
-            // Push the marker to our array of markers.
-            markers().push(marker);
+            // Push the marker to our array of global markers.
+            markers.push(marker);
+            //location.push(locations);
+
             // Extend boundaries of the map for each marker
             bounds.extend(marker.position);
             // Create an onclick event to open an infowindow at each marker.
@@ -77,47 +81,46 @@ function ViewModel() {
                 }
         }
 
-        
-        // Toogle betweeen hiding or showing drop down options
-        function dropdownFunction() {
-                document.getElementById("myDropdown").classList.toggle("show");
-        }
-
-        // Close dropdown menu if user clicks outside of it
-        window.onclick = function(e) {                      
-                if (!event.target.matches('.dropbtn')) {
-                        var dropdowns = document.getElementsByClassName("dropdown-content");
-                        var i;
-                        for (i = 0; i < dropdowns.length; i++) {
-                                var openDropdown = dropdowns[i];
-                                if (openDropdown.classList.contains('show')) {
-                                        openDropdown.classList.remove('show');
-                                }
-                        }
-                }                           
-        }
-
-        
-        // Loop through array to display list                  
-        var dropList = document.getElementsByClassName("dropdown-content")[0];
-                                  
-        for (var i = 0; i < this.locations.length; i++) {
-                var opt = this.locations[i];
-                var el = document.createElement("a");
-                el.href = i;
-                el.id = i;
-                el.text = opt.title;
-                el.onclick = hideMarkers(markers, el.id)
-                dropList.appendChild(el);
-        }
-
-        function hideMarkers() {
-                for (var i = 0; markers.length; i++) {
-                     markers[i].setMap(null);
-                }
-         }
 // ViewModel Closing
 }
+
+// function dropdownFunction() {
+//         document.getElementById("myDropdown").classList.toggle("show");
+// }
+
+//         // Close dropdown menu if user clicks outside of it
+// window.onclick = function(e) {                      
+//         if (!event.target.matches('.dropbtn')) {
+//                 var dropdowns = document.getElementsByClassName("dropdown-content");
+//                 var i;
+//                 for (i = 0; i < dropdowns.length; i++) {
+//                         var openDropdown = dropdowns[i];
+//                         if (openDropdown.classList.contains('show')) {
+//                                 openDropdown.classList.remove('show');
+//                         }
+//                 }
+//         }                           
+// }
+
+        
+// // Loop through array to display list                  
+// var dropList = document.getElementsByClassName("dropdown-content")[0];
+                                  
+// for (var i = 0; i < locations.length; i++) {
+//         var opt = locations[i];
+//         var el = document.createElement("a");
+//         el.href = i;
+//         el.id = i;
+//         el.text = opt.title;
+//         el.onclick = hideMarkers(markers, el.id)
+//         dropList.appendChild(el);
+// }
+
+// function hideMarkers() {
+//         for (var i = 0; markers.length; i++) {
+//              markers[i].setMap(null);
+//         }
+// }
 
 // Allow data binds in View(indexko.html) to connect with our viewmodel(app.js)
 function initMap() {
