@@ -68,13 +68,13 @@ function ViewModel() {
                 }
         }
 
-        function hideMarker() {
-                if (title[i] = true) {
-                        markers[i].setMap(map);
-                } else {
-                        markers[i].setMap(null);
-                }
-        }
+        // function hideMarker() {
+        //         if (title[i] = true) {
+        //                 markers[i].setMap(map);
+        //         } else {
+        //                 markers[i].setMap(null);
+        //         }
+        // }
 // ViewModel Closing
 }
 
