@@ -7,12 +7,12 @@
 </head>
 </body>
     <div id="map"></div>
-    <div id="list"></div>
-    <div class="dropdown">
-        <button onclick=""
-        class="dropbtn">Filter Location</button>
-        <div id="myDropdown" class="dropdown-content"></div>
+    <div>
+        <h3>Select Button to Filter That Location</h3>
     </div>
+    <div data-bind="foreach: locations">
+        <div><button data-bind="text: title, click: hideMarker"></button></div>   
+    </div>        
     <script src="js/lib/knockout-3.2.0.js"></script>    
     <script src="js/app.js"></script>
     <script async defer
