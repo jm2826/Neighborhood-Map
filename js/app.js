@@ -8,9 +8,9 @@ function ViewModel() {
         //         //jsonp: "callback"
         // })
         // Defining self for the this passed in the ko.computed function
-        var self = this;
+        //var self = this;
 
-        self.markers = ko.observableArray([]);        
+        markers = ko.observableArray([]);        
         // Chicago Map Loaded initally
         var map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: 41.8781, lng: -87.6298},
@@ -44,7 +44,7 @@ function ViewModel() {
                 id: i
             });
             // Push the marker to our array of global markers.
-            self.markers.push(marker);
+            markers.push(marker);
             //location.push(locations);
 
             // Extend boundaries of the map for each marker
@@ -76,24 +76,28 @@ function ViewModel() {
         }
 
         // This function will loop through the markers array and display them all.
-        showLocations = function (markers) {
+        showLocations = function () {
                 for (var i = 0; i < markers.length; i++) {
-                self.markers[i].setMap(self.map);
+                markers[i].setMap(map);
                 bounds.extend(markers[i].position);
                 }
         map.fitBounds(bounds);
         };
 
         // This function will loop through the locations and hide them all.
-        hideLocations = function (markers) {
-                for (var i = 0; i < self.markers.length; i++) {
-                  self.markers[i].setMap(null);
+        hideLocations = function () {
+                for (var i = 0; i < markers.length; i++) {
+                  this.markers[i].setMap(null);
                 }
         };
 
         selectedLoc = ko.observableArray([]);
         hideMarkers = function() {
-
+                if (selectedLoc = marker.title) {
+                        showLocations();
+                }  else {
+                       hideLocations(); 
+                }    
         }
 
 // ViewModel Closing
