@@ -1,9 +1,8 @@
-var markers = [];
-//var location = [];
-
 function ViewModel() {
+        // Defining self for the this passed in the ko.computed function
+        var self = this;
 
-        //var markers = ko.observableArray([]);
+        self.markers = ko.observableArray([]);        
         // Chicago Map Loaded initally
         var map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: 41.8781, lng: -87.6298},
@@ -11,7 +10,7 @@ function ViewModel() {
                 mapTypeControl: false
         });
         // Array of 5 locations for markers
-        locations = ko.observableArray([
+        self.locations = ko.observableArray([
                 {title: 'Millenium Park', location: {lat: 41.8826, lng: -87.6226}},
                 {title: 'Navy Pier', location: {lat: 41.8917, lng: -87.6086}},
                 {title: 'AT&T Corporate Building', location: {lat: 41.8841369, lng: -87.6350657}},
@@ -24,10 +23,10 @@ function ViewModel() {
         // Listings that are outside the initiale zoom areas. This fits everything we want user to see.
         bounds = new google.maps.LatLngBounds();
        
-        for (var i = 0; i < locations().length; i++) {
+        for (var i = 0; i < self.locations().length; i++) {
             // Get the position from the location array.
-            var position = locations()[i].location;
-            var title = locations()[i].title;
+            var position = self.locations()[i].location;
+            var title = self.locations()[i].title;
             // Create a marker per location, and put into markers array.
             var marker = new google.maps.Marker({
                 map: map,
@@ -37,7 +36,7 @@ function ViewModel() {
                 id: i
             });
             // Push the marker to our array of global markers.
-            markers.push(marker);
+            self.markers.push(marker);
             //location.push(locations);
 
             // Extend boundaries of the map for each marker
@@ -68,13 +67,12 @@ function ViewModel() {
                 }
         }
 
-        // function hideMarker() {
-        //         if (title[i] = true) {
-        //                 markers[i].setMap(map);
-        //         } else {
-        //                 markers[i].setMap(null);
-        //         }
-        // }
+        // UI Selection of a location will Filter out the markers not selected
+        filterLoc = ko.computed(function() {
+                for (var i = 0; 1 < self.markers.length; i++) {
+                        markers[i].setMap(null);
+                }
+        }, this);
 // ViewModel Closing
 }
 
