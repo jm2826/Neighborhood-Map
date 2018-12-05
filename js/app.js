@@ -91,9 +91,10 @@ function ViewModel() {
                 }
         };
 
-        selectedLoc = ko.computed(function() {
+        selectedLoc = ko.observableArray([]);
+        hideMarkers = function() {
 
-        }, self);
+        }
 
 // ViewModel Closing
 }
