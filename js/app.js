@@ -1,4 +1,12 @@
 function ViewModel() {
+
+        // var wikiUrl = "http://en.wikipedia.org/w/api.php?action=opensearch=' +locations[i].title+ '&format=json&callback=wikiCallback";
+
+        // .ajax({
+        //         url: wikiUrl,
+        //         dataType: "jsonp",
+        //         //jsonp: "callback"
+        // })
         // Defining self for the this passed in the ko.computed function
         var self = this;
 
@@ -10,7 +18,7 @@ function ViewModel() {
                 mapTypeControl: false
         });
         // Array of 5 locations for markers
-        self.locations = ko.observableArray([
+        locations = ko.observableArray([
                 {title: 'Millenium Park', location: {lat: 41.8826, lng: -87.6226}},
                 {title: 'Navy Pier', location: {lat: 41.8917, lng: -87.6086}},
                 {title: 'AT&T Corporate Building', location: {lat: 41.8841369, lng: -87.6350657}},
@@ -23,10 +31,10 @@ function ViewModel() {
         // Listings that are outside the initiale zoom areas. This fits everything we want user to see.
         bounds = new google.maps.LatLngBounds();
        
-        for (var i = 0; i < self.locations().length; i++) {
+        for (var i = 0; i < locations().length; i++) {
             // Get the position from the location array.
-            var position = self.locations()[i].location;
-            var title = self.locations()[i].title;
+            var position = locations()[i].location;
+            var title = locations()[i].title;
             // Create a marker per location, and put into markers array.
             var marker = new google.maps.Marker({
                 map: map,
@@ -57,7 +65,7 @@ function ViewModel() {
                 // Check to make sure the infowindow is not already opened on this marker.
                 if (infowindow.marker != marker) {
                         infowindow.marker = marker;
-                        infowindow.setContent('<div>' + marker.title + '</div>');
+                        infowindow.setContent('<div>' + marker.title + '<br/></div>');
                         infowindow.open(map, marker);
                         //Make sure the marker property is cleared if the infowindow is closed.
                         infowindow.addListener('closeclick',function() {
@@ -71,22 +79,26 @@ function ViewModel() {
         showLocations = function (markers) {
                 for (var i = 0; i < markers.length; i++) {
                 self.markers[i].setMap(self.map);
-                bounds.extend(self.markers[i].position);
+                bounds.extend(markers[i].position);
                 }
-        map.fitBounds(self.bounds);
+        map.fitBounds(bounds);
         };
+
+        selectedLoc = ko.computed(function() {
+                
+        }, self);
 
         // This function will loop through the locations and hide them all.
-        hideLocations = function (markers) {
-                for (var i = 0; i < self.markers.length; i++) {
-                  self.markers[i].setMap(null);
-                }
-        };
+        // hideLocations = function (markers) {
+        //         for (var i = 0; i < self.markers.length; i++) {
+        //           self.markers[i].setMap(null);
+        //         }
+        // };
 
-        // UI Selection of a location will Filter out the markers not selected
-        filterLoc = ko.computed(function() {
-                hideLocations();
-        }, self);
+        // // UI Selection of a location will Filter out the markers not selected
+        // filterLoc = ko.computed(function() {
+        //         hideLocations();
+        // }, self);
 // ViewModel Closing
 }
 

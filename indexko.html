@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
+    <meta charset="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/style.css">
     <title> Joels Neighborhood Map</title>
 </head>
@@ -11,12 +11,17 @@
     <div data-bind="foreach: locations">
         <ul data-bind="text: title"></ul> 
     </div>
+    <p>
+        Make A Selection to Filter Your Location:
+        <div><select data-bind="options: locations, optionsText: function(item) {
+            return item.title }, selectedOptions: selectedLoc, optionsCaption: 'Choose A Location'"></select></div>
+    </p>
 
-    <form id="filterlist" class="filterlist">
+    <!-- <form id="filterlist" class="filterlist">
         <label for="filter">Type in a Title: </label>
-        <input data-bind="text: filterLoc">
-        <button id="submit-btn">Filter</button>
-    </form>
+        <input data-bind="visible: showLoc">
+        <button id="submit-btn" data-bind="click: filterLoc">Filter</button>
+    </form> -->
 
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>       
     <script src="js/lib/knockout-3.2.0.js"></script>    
