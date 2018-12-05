@@ -12,7 +12,7 @@
         <ul data-bind="text: title"></ul> 
     </div>
     <p>
-        Make A Selection to Filter Your Location:
+        <span><h5>Make A Selection to Filter Your Location: </h5></span>
         <div><select data-bind="options: locations, optionsText: function(item) {
             return item.title }, selectedOptions: selectedLoc, optionsCaption: 'Choose A Location',
             optionsAfterRender: hideMarkers"></select></div>
