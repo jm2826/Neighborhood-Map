@@ -9,15 +9,15 @@
     <div id="map"></div>
 
     <div data-bind="foreach: locations">
-        <div><ul data-bind="text: title"></ul></div>   
+        <ul data-bind="text: title"></ul> 
     </div>
 
     <form id="filterlist" class="filterlist">
         <label for="filter">Type in a Title: </label>
-        <input type="text" id="location-title" value>
+        <input data-bind="text: filterLoc">
         <button id="submit-btn">Filter</button>
     </form>
-    
+
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>       
     <script src="js/lib/knockout-3.2.0.js"></script>    
     <script src="js/app.js"></script>
