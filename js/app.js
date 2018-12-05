@@ -75,29 +75,27 @@ function ViewModel() {
                 }
         }
 
-        // This function will loop through the markers array and display them all.
-        showLocations = function () {
-                for (var i = 0; i < markers.length; i++) {
-                markers[i].setMap(map);
-                bounds.extend(markers[i].position);
-                }
-        map.fitBounds(bounds);
-        };
+        // // This function will loop through the markers array and display them all.
+        // showLocations = function () {
+        //         for (var i = 0; i < markers.length; i++) {
+        //         markers[i].setMap(map);
+        //         bounds.extend(markers[i].position);
+        //         }
+        // map.fitBounds(bounds);
+        // };
 
         // This function will loop through the locations and hide them all.
         hideLocations = function () {
                 for (var i = 0; i < markers.length; i++) {
-                  this.markers[i].setMap(null);
+                  markers[i].setMap(null);
                 }
         };
 
         selectedLoc = ko.observableArray([]);
-        hideMarkers = function() {
-                if (selectedLoc = marker.title) {
-                        showLocations();
-                }  else {
-                       hideLocations(); 
-                }    
+        hideMarkers = function(markers, selectedLoc) {
+                if (markers.title = selectedLoc) {
+                        hideLocations();
+                }
         }
 
 // ViewModel Closing
