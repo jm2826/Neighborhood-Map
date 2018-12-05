@@ -5,14 +5,20 @@
     <link rel="stylesheet" href="css/style.css">
     <title> Joels Neighborhood Map</title>
 </head>
-</body>
+<body>
     <div id="map"></div>
-    <div>
-        <h3>Select Button to Filter That Location</h3>
-    </div>
+
     <div data-bind="foreach: locations">
-        <div><button data-bind="text: title"></button></div>   
-    </div>        
+        <div><ul data-bind="text: title"></ul></div>   
+    </div>
+
+    <form id="filterlist" class="filterlist">
+        <label for="filter">Type in a Title: </label>
+        <input type="text" id="location-title" value>
+        <button id="submit-btn">Filter</button>
+    </form>
+    
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>       
     <script src="js/lib/knockout-3.2.0.js"></script>    
     <script src="js/app.js"></script>
     <script async defer
