@@ -14,14 +14,9 @@
     <p>
         Make A Selection to Filter Your Location:
         <div><select data-bind="options: locations, optionsText: function(item) {
-            return item.title }, selectedOptions: selectedLoc, optionsCaption: 'Choose A Location'"></select></div>
+            return item.title }, selectedOptions: selectedLoc, optionsCaption: 'Choose A Location',
+            optionsAfterRender: hideMarkers"></select></div>
     </p>
-
-    <!-- <form id="filterlist" class="filterlist">
-        <label for="filter">Type in a Title: </label>
-        <input data-bind="visible: showLoc">
-        <button id="submit-btn" data-bind="click: filterLoc">Filter</button>
-    </form> -->
 
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>       
     <script src="js/lib/knockout-3.2.0.js"></script>    
