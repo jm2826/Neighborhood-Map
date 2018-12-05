@@ -67,11 +67,25 @@ function ViewModel() {
                 }
         }
 
+        // This function will loop through the markers array and display them all.
+        showLocations = function (markers) {
+                for (var i = 0; i < markers.length; i++) {
+                self.markers[i].setMap(self.map);
+                bounds.extend(self.markers[i].position);
+                }
+        map.fitBounds(self.bounds);
+        };
+
+        // This function will loop through the locations and hide them all.
+        hideLocations = function (markers) {
+                for (var i = 0; i < self.markers.length; i++) {
+                  self.markers[i].setMap(null);
+                }
+        };
+
         // UI Selection of a location will Filter out the markers not selected
         filterLoc = ko.computed(function() {
-                for (var i = 0; 1 < self.markers.length; i++) {
-                        markers[i].setMap(null);
-                }
+                hideLocations();
         }, self);
 // ViewModel Closing
 }
