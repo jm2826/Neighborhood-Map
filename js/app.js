@@ -72,7 +72,7 @@ function ViewModel() {
                 for (var i = 0; 1 < self.markers.length; i++) {
                         markers[i].setMap(null);
                 }
-        }, this);
+        }, self);
 // ViewModel Closing
 }
 
