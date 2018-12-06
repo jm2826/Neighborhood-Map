@@ -1,15 +1,5 @@
 function ViewModel() {
 
-        // var wikiUrl = "http://en.wikipedia.org/w/api.php?action=opensearch=' +locations[i].title+ '&format=json&callback=wikiCallback";
-
-        // .ajax({
-        //         url: wikiUrl,
-        //         dataType: "jsonp",
-        //         //jsonp: "callback"
-        // })
-        // Defining self for the this passed in the ko.computed function
-        //var self = this;
-
         markers = ko.observableArray([]);        
         // Chicago Map Loaded initally
         var map = new google.maps.Map(document.getElementById('map'), {
@@ -26,6 +16,23 @@ function ViewModel() {
                 {title: 'Chicago Theater', location: {lat: 41.8854, lng: -87.6275}},
         ]);
 
+        // FLICKR API call to get pictures
+        var flickerAPI = "https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";;
+        $.getJSON( flickerAPI, {
+                tags: locations().title,
+                tagmode: "any",
+                format: "json"
+        })
+        // Function ran when JSONP callback is requested
+        .done(function( data ) {
+                $.each( data.items, function( i, item ) {
+                        $( "<img>" ).attr( "src", item.media.m ).appendTo( "#images" );
+                        if ( i === 0 ) {
+                                return false;
+                        }
+                });
+        });;  
+
         largeInfowindow = new google.maps.InfoWindow();
 
         // Listings that are outside the initiale zoom areas. This fits everything we want user to see.
@@ -41,7 +48,7 @@ function ViewModel() {
                 position: position,
                 title: title,
                 animation: google.maps.Animation.DROP,
-                id: i
+                id: i,
             });
             // Push the marker to our array of global markers.
             markers.push(marker);
