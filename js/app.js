@@ -18,11 +18,13 @@ function ViewModel() {
 
         // FLICKR API call to get pictures
         var flickerAPI = "https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";;
-        $.getJSON( flickerAPI, {
-                tags: locations().title,
-                tagmode: "any",
-                format: "json"
-        })
+        $.getJSON(flickerAPI, {
+                        tags: locations().title,
+                        // lat: locations().location[0],
+                        // lon: locations().location[1],
+                        tagmode: "any",
+                        format: "json"
+                })
         // Function ran when JSONP callback is requested
         .done(function( data ) {
                 $.each( data.items, function( i, item ) {
@@ -31,7 +33,11 @@ function ViewModel() {
                                 return false;
                         }
                 });
-        });;  
+        })
+        
+        .fail(function(){
+                console.log("Request Failed: FLICKR API not Connected")
+        });  
 
         largeInfowindow = new google.maps.InfoWindow();
 
