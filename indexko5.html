@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Joels Neighborhood Map</title>
+</head>
+<body>
+    <div id="map"></div>
+    <div id="images">
+    </div>
+    <div>
+        <h5>Make A Selection to Filter Your Location: </h5>
+        <select data-bind="options: dropdownOptions, value: selectedOption"></select>
+        <ul data-bind="foreach: filteredLocations">
+            <li data-bind="text: title"></li>
+        </ul>
+    </div>
+       
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="js/lib/knockout-3.2.0.js"></script>
+    <script src="js/app5.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbsadpXTVkHIN-cnvhWDrjYAqN5iKW5LQ&v=3&callback=initMap">
+    </script>
+</body>
+</html>
