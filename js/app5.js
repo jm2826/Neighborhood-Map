@@ -88,7 +88,7 @@ function LocationViewModel() {
                 map: map,
                 position: position,
                 title: title,
-               // url: wikiurl,
+                url: wikiurl,
                 animation: google.maps.Animation.DROP,
                 id: i,
         });
@@ -102,7 +102,6 @@ function LocationViewModel() {
         marker.addListener('click', function() {
             populateInfoWindow(this, largeInfowindow);
         });
-        //return markers[i];
     }
 
     // Tell map to fit itself to the boundaries set
@@ -130,12 +129,6 @@ function LocationViewModel() {
     self.locations.forEach(function (item) {
         self.dropdownOptions.push(item.title);
     });
-
-//     // import markers array and make new array for filter
-//     self.markers.forEach(function(item) {
-//         var tempMarker = item.title;
-//         return tempMarker;        
-//     })
 
     // currently selected category i.e default option
     self.selectedOption = ko.observable("All");
