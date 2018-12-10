@@ -14,10 +14,10 @@ https://github.com/jm2826/Neighborhood-Map.git
 * Run(double-click) the indexko.html file.
 
 ## Resources Used
-*Knockout.JS
-*Google Maps API
-*Wikipedia API
-*Udacity Fullstack Nanodegree Project 5
+* Knockout.JS
+* Google Maps API
+* Wikipedia API
+* Udacity Fullstack Nanodegree Project 5
 
 ## Contributing
 Please see CONTRIBUTING.md.
