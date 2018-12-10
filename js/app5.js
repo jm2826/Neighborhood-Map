@@ -62,14 +62,37 @@ function LocationViewModel() {
         // Get the position from the location array.
         var position = locations[i].location;
         var title = locations[i].title;
+
+                
+        // Get Wikipedia article for Infowindow
+        var wikiAPI = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' +title+ '&generator=allpages&gaplimit=max&prop=redirects&format=json&callback=wikiCallback';
+        $.ajax({      
+                url: wikiAPI, 
+                dataType: "jsonp",
+                success: function( response ) {      
+                        var articleList = response[1];
+
+                        for (var i=0; i< articleList.length; i++) {
+                                articleStr = articleList[i];
+                                var wikiurl = "http://en.wikipedia.org/wiki/" +articleStr;                                     
+                        }
+                        return wikiurl;                                     
+                },                        
+                error: function(error) {
+                        console.log(error);
+                }                                         
+        });
+
         // Create a marker per location, and put into markers array.
         var marker = new google.maps.Marker({
-            map: map,
-            position: position,
-            title: title,
-            animation: google.maps.Animation.BOUNCE,
-            id: i,
+                map: map,
+                position: position,
+                title: title,
+               // url: wikiurl,
+                animation: google.maps.Animation.DROP,
+                id: i,
         });
+
         // Push the marker to our array of global markers.
         markers.push(marker);        
 
@@ -108,6 +131,12 @@ function LocationViewModel() {
         self.dropdownOptions.push(item.title);
     });
 
+//     // import markers array and make new array for filter
+//     self.markers.forEach(function(item) {
+//         var tempMarker = item.title;
+//         return tempMarker;        
+//     })
+
     // currently selected category i.e default option
     self.selectedOption = ko.observable("All");
 
@@ -117,18 +146,32 @@ function LocationViewModel() {
     self.filteredLocations = ko.computed(function () {        
         var category = self.selectedOption();
 
+        // // Makes Marker Invisible if not selected
+        // function myFunction() {
+        //         marker.setVisible(false);
+        // };
+
         if (category === "All") {
+                markers.forEach(function (marker){
+                        marker.setVisible(true);
+                })                
                 return self.locations;
         } else {
-                // Copy locations and Markers Array
-                var tempLocationsCopy = self.locations.slice();                       
-
-                return tempLocationsCopy.filter(function (location) {
-                    return location.title === category;
+                // Loop through each marker and set visibility true if it matches selected option
+                // or update visibility to false if it dosn't match selected option                               
+                markers.forEach(function (marker) {
+                        if (marker.title === category) {
+                                marker.setVisible(true);
+                        } else {
+                                marker.setVisible(false);
+                        }
+                });
+                // Return the filterd locations
+                return self.locations.filter(function(location) {                
+                        return location.title === category;              
                 });
         }
     });
-
 // LocationViewModel Closing
 }
 
