@@ -40,7 +40,7 @@ var markers = [];
 
 function LocationViewModel() {
 
-    var self = this;
+    var self = this;8
         
     // import starting data from your data store and put it in your vm
     self.locations = locations;
@@ -62,6 +62,7 @@ function LocationViewModel() {
         // Get the position from the location array.
         var position = locations[i].location;
         var title = locations[i].title;
+        var wikiURL = [];
 
                 
         // Get Wikipedia article for Infowindow
@@ -74,9 +75,10 @@ function LocationViewModel() {
 
                         for (var i=0; i< articleList.length; i++) {
                                 articleStr = articleList[i];
-                                var wikiurl = "http://en.wikipedia.org/wiki/" +articleStr;                                     
-                        }
-                        return wikiurl;                                     
+                                var wikiLink = "http://en.wikipedia.org/wiki/" +articleStr;                                     
+                        }                      
+                        wikiURL.push(wikiLink);
+                                                           
                 },                        
                 error: function(error) {
                         console.log(error);
@@ -88,7 +90,7 @@ function LocationViewModel() {
                 map: map,
                 position: position,
                 title: title,
-                url: wikiurl,
+                url: wikiURL,
                 animation: google.maps.Animation.DROP,
                 id: i,
         });
@@ -110,11 +112,11 @@ function LocationViewModel() {
     // This function populates the infowindow when the marker is clicked. We'll only allow
     // one infowindow which will open at the marker that is clicked, and populate based
     // on that markers position.
-    function populateInfoWindow(marker, infowindow) {
+    function populateInfoWindow(marker, infowindow, wikiURL) {
         // Check to make sure the infowindow is not already opened on this marker.
         if (infowindow.marker != marker) {
             infowindow.marker = marker;
-            infowindow.setContent('<div>' + marker.title + '<br/></div>');
+            infowindow.setContent('<div>' + marker.title + '<br/>','</div>','<div>' +'<a href =' + wikiURL + '>','</div>');
             infowindow.open(map, marker);
             //Make sure the marker property is cleared if the infowindow is closed.
             infowindow.addListener('closeclick',function() {
@@ -139,10 +141,6 @@ function LocationViewModel() {
     self.filteredLocations = ko.computed(function () {        
         var category = self.selectedOption();
 
-        // // Makes Marker Invisible if not selected
-        // function myFunction() {
-        //         marker.setVisible(false);
-        // };
 
         if (category === "All") {
                 markers.forEach(function (marker){
