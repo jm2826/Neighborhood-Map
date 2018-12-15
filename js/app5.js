@@ -75,9 +75,9 @@ function LocationViewModel() {
 
                         for (var i=0; i< articleList.length; i++) {
                                 articleStr = articleList[i];
-                                var wikiLink = "http://en.wikipedia.org/wiki/" +articleStr;                                     
+                                var url = "http://en.wikipedia.org/wiki/" +articleStr;                                     
                         }                      
-                        wikiURL.push(wikiLink);
+                        wikiURL.push(url);
                                                            
                 },                        
                 error: function(error) {
@@ -90,7 +90,7 @@ function LocationViewModel() {
                 map: map,
                 position: position,
                 title: title,
-                url: wikiURL,
+                //url: wikiURL,
                 animation: google.maps.Animation.DROP,
                 id: i,
         });
@@ -112,17 +112,17 @@ function LocationViewModel() {
     // This function populates the infowindow when the marker is clicked. We'll only allow
     // one infowindow which will open at the marker that is clicked, and populate based
     // on that markers position.
-    function populateInfoWindow(marker, infowindow, wikiURL) {
+    function populateInfoWindow(marker, infowindow) {
         // Check to make sure the infowindow is not already opened on this marker.
         if (infowindow.marker != marker) {
             infowindow.marker = marker;
-            infowindow.setContent('<div>' + marker.title + '<br/>','</div>','<div>' +'<a href =' + wikiURL + '>','</div>');
+            infowindow.setContent('<a href="'+wikiURL.slice()+'">'+ marker.title + '</a>'); 
+            //infowindow.setContent('<div>' + marker.title + '<br/>','</div>','<div>' +'<a href =' + wikiURL[0] + '>','</div>');
             infowindow.open(map, marker);
             //Make sure the marker property is cleared if the infowindow is closed.
             infowindow.addListener('closeclick',function() {
                 infowindow.marker(null);
             });
-
         }
     }
 
