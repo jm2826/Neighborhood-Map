@@ -116,7 +116,7 @@ function LocationViewModel() {
         // Check to make sure the infowindow is not already opened on this marker.
         if (infowindow.marker != marker) {
             infowindow.marker = marker;
-            infowindow.setContent('<a href="'+wikiURL.slice()+'">'+ marker.title + '</a>'); 
+            infowindow.setContent('<a href="'+wikiURL.find(marker.title)+'">'+ marker.title + '</a>'); 
             //infowindow.setContent('<div>' + marker.title + '<br/>','</div>','<div>' +'<a href =' + wikiURL[0] + '>','</div>');
             infowindow.open(map, marker);
             //Make sure the marker property is cleared if the infowindow is closed.
