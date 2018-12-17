@@ -59,12 +59,10 @@ function LocationViewModel() {
     bounds = new google.maps.LatLngBounds();
        
     for (var i = 0; i < locations.length; i++) {
-        // Get the position from the location array.
         var position = locations[i].location;
         var title = locations[i].title;
-        var wikiURL = [];
-
-                
+        var wikiUrl = [];
+                        
         // Get Wikipedia article for Infowindow
         var wikiAPI = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' +title+ '&generator=allpages&gaplimit=max&prop=redirects&format=json&callback=wikiCallback';
         $.ajax({      
@@ -75,10 +73,10 @@ function LocationViewModel() {
 
                         for (var i=0; i< articleList.length; i++) {
                                 articleStr = articleList[i];
-                                var url = "http://en.wikipedia.org/wiki/" +articleStr;                                     
-                        }                      
-                        wikiURL.push(url);
-                                                           
+                                url = "http://en.wikipedia.org/wiki/" +articleStr;                                     
+                        }
+                        // Pass wikipedia link to array for each location title                              
+                        wikiUrl.push(url);                      
                 },                        
                 error: function(error) {
                         console.log(error);
@@ -115,14 +113,14 @@ function LocationViewModel() {
     function populateInfoWindow(marker, infowindow) {
         // Check to make sure the infowindow is not already opened on this marker.
         if (infowindow.marker != marker) {
-            infowindow.marker = marker;
-            infowindow.setContent('<a href="'+wikiURL.find(marker.title)+'">'+ marker.title + '</a>'); 
-            //infowindow.setContent('<div>' + marker.title + '<br/>','</div>','<div>' +'<a href =' + wikiURL[0] + '>','</div>');
-            infowindow.open(map, marker);
-            //Make sure the marker property is cleared if the infowindow is closed.
-            infowindow.addListener('closeclick',function() {
-                infowindow.marker(null);
-            });
+                infowindow.marker = marker;
+                infowindow.setContent('<a href="'+wikiUrl+'">'+ marker.title + '</a>');                                                                       
+                infowindow.open(map, marker);
+                //Make sure the marker property is cleared if the infowindow is closed.
+                infowindow.addListener('closeclick',function() {
+                        infowindow.marker(null);
+                });
+
         }
     }
 
