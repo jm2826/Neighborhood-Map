@@ -74,7 +74,10 @@ function LocationViewModel() {
         var category = locations[i].category;
         var wikiUrl = locations[i].locUrl;
                         
-        // Get Wikipedia article for Infowindow
+        // var wikiRequestTimeout = setTimeout(function() {
+        //         alert("wikpedia resource failed to load!!!!!!!!!");
+        // }, 8000);
+
         var wikiAPI = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' +title+ '&generator=allpages&gaplimit=max&prop=redirects&format=json&callback=wikiCallback';
         $.ajax({      
                 url: wikiAPI, 
@@ -88,12 +91,12 @@ function LocationViewModel() {
                         }
                         // Pass wikipedia link to array for each location title
                         if (finalUrl.includes(locations.title)) {                         
-                        locUrl.push(finalUrl);
-                        };                    
-                },                        
-                .error: function(error) {
-                        console.log(error);
-                }                                         
+                        locUrl.push(finalUrl)
+                        };                              
+                },
+                error: function(e) {
+                        alert("wikpedia resource failed to load!!!!!!!!!");
+                }                       
         });
 
         // Create a marker per location, and put into markers array.
@@ -128,7 +131,7 @@ function LocationViewModel() {
         // Check to make sure the infowindow is not already opened on this marker.
         if (infowindow.marker != marker) {
                 infowindow.marker = marker;
-                infowindow.setContent('<a href="'+wikiUrl+'">'+ marker.title + '</a>');                                                                       
+                infowindow.setContent('<a href="'+marker.url+'">'+ marker.title + '</a>');                                                                       
                 infowindow.open(map, marker);
                 //Make sure the marker property is cleared if the infowindow is closed.
                 infowindow.addListener('closeclick',function() {
