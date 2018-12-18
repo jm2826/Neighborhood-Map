@@ -72,12 +72,7 @@ function LocationViewModel() {
         var position = locations[i].location;
         var title = locations[i].title;
         var category = locations[i].category;
-        var wikiUrl = locations[i].locUrl;
-                        
-        // var wikiRequestTimeout = setTimeout(function() {
-        //         alert("wikpedia resource failed to load!!!!!!!!!");
-        // }, 8000);
-
+        
         var wikiAPI = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' +title+ '&generator=allpages&gaplimit=max&prop=redirects&format=json&callback=wikiCallback';
         $.ajax({      
                 url: wikiAPI, 
@@ -91,13 +86,15 @@ function LocationViewModel() {
                         }
                         // Pass wikipedia link to array for each location title
                         if (finalUrl.includes(locations.title)) {                         
-                        locUrl.push(finalUrl)
+                        locations[i].locUrl.push(finalUrl)
                         };                              
                 },
                 error: function(e) {
                         alert("wikpedia resource failed to load!!!!!!!!!");
                 }                       
         });
+
+        var wikiUrl = locations[i].locUrl;
 
         // Create a marker per location, and put into markers array.
         var marker = new google.maps.Marker({
