@@ -90,7 +90,7 @@ function LocationViewModel() {
                         };                              
                 },
                 error: function() {
-                        alert("wikpedia resource failed to load!!!!!!!!!");
+                        alert("wikpedia resource failed to load !!!!!!!!");
                 }                       
         });
 
