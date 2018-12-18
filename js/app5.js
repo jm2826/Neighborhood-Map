@@ -5,42 +5,52 @@ var locations = [{
         location: {
                 lat: 41.8826,
                 lng: -87.6226
-        }
+        },
+        category: 'Sightseeing',
+        locUrl: ''
 },
 {
         title: 'Navy Pier',
         location: {
                 lat: 41.8917,
                 lng: -87.6086
-        }
+        },
+        category: 'Entertainment',
+        locUrl: ''
 },
 {
         title: 'AT&T Corporate Building',
         location: {
                 lat: 41.8841369,
                 lng: -87.6350657
-        }
+        },
+        category: 'Business',
+        locUrl: ''
 },
 {
         title: 'Solider Field',
         location: {
                 lat: 41.8623,
                 lng: -87.6167
-        }
+        },
+        category: 'Sports',
+        locUrl: ''
 },
 {
         title: 'Chicago Theater',
         location: {
                 lat: 41.8854,
                 lng: -87.6275
-        }
-},
-];
+        },
+        category: 'Arts',
+        locUrl: ''
+}];
+
 var markers = [];
 
 function LocationViewModel() {
 
-    var self = this;8
+    var self = this;
         
     // import starting data from your data store and put it in your vm
     self.locations = locations;
@@ -61,7 +71,8 @@ function LocationViewModel() {
     for (var i = 0; i < locations.length; i++) {
         var position = locations[i].location;
         var title = locations[i].title;
-        var wikiUrl = [];
+        var category = locations[i].category;
+        var wikiUrl = locations[i].locUrl;
                         
         // Get Wikipedia article for Infowindow
         var wikiAPI = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' +title+ '&generator=allpages&gaplimit=max&prop=redirects&format=json&callback=wikiCallback';
@@ -73,12 +84,14 @@ function LocationViewModel() {
 
                         for (var i=0; i< articleList.length; i++) {
                                 articleStr = articleList[i];
-                                url = "http://en.wikipedia.org/wiki/" +articleStr;                                     
+                                finalUrl = "http://en.wikipedia.org/wiki/" +articleStr;                                     
                         }
-                        // Pass wikipedia link to array for each location title                              
-                        wikiUrl.push(url);                      
+                        // Pass wikipedia link to array for each location title
+                        if (finalUrl.includes(locations.title)) {                         
+                        locUrl.push(finalUrl);
+                        };                    
                 },                        
-                error: function(error) {
+                .error: function(error) {
                         console.log(error);
                 }                                         
         });
@@ -88,7 +101,8 @@ function LocationViewModel() {
                 map: map,
                 position: position,
                 title: title,
-                //url: wikiURL,
+                category: category,
+                url: wikiUrl,
                 animation: google.maps.Animation.DROP,
                 id: i,
         });
@@ -127,7 +141,7 @@ function LocationViewModel() {
     // import dropdown options
     self.dropdownOptions = ko.observableArray(['All']); //this is required to reset the selected filter
     self.locations.forEach(function (item) {
-        self.dropdownOptions.push(item.title);
+        self.dropdownOptions.push(item.category);
     });
 
     // currently selected category i.e default option
@@ -137,10 +151,10 @@ function LocationViewModel() {
     // this value gets updated if any of the observable its listening to changes
     // eg., selectedOption
     self.filteredLocations = ko.computed(function () {        
-        var category = self.selectedOption();
+        var categories = self.selectedOption();
 
 
-        if (category === "All") {
+        if (categories === "All") {
                 markers.forEach(function (marker){
                         marker.setVisible(true);
                 })                
@@ -149,7 +163,7 @@ function LocationViewModel() {
                 // Loop through each marker and set visibility true if it matches selected option
                 // or update visibility to false if it dosn't match selected option                               
                 markers.forEach(function (marker) {
-                        if (marker.title === category) {
+                        if (marker.category === categories) {
                                 marker.setVisible(true);
                         } else {
                                 marker.setVisible(false);
@@ -157,7 +171,7 @@ function LocationViewModel() {
                 });
                 // Return the filterd locations
                 return self.locations.filter(function(location) {                
-                        return location.title === category;              
+                        return location.category === categories;              
                 });
         }
     });
