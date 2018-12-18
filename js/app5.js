@@ -89,7 +89,7 @@ function LocationViewModel() {
                         locations[i].locUrl.push(finalUrl)
                         };                              
                 },
-                error: function(e) {
+                error: function() {
                         alert("wikpedia resource failed to load!!!!!!!!!");
                 }                       
         });
