@@ -19,12 +19,12 @@ var locations = [{
         locUrl: ''
 },
 {
-        title: 'AT&T Corporate Building',
+        title: 'United Center',
         location: {
-                lat: 41.8841369,
-                lng: -87.6350657
+                lat: 41.8749965,
+                lng: -87.67116
         },
-        category: 'Business',
+        category: 'NBA Arena',
         locUrl: ''
 },
 {
@@ -33,7 +33,7 @@ var locations = [{
                 lat: 41.8623,
                 lng: -87.6167
         },
-        category: 'Sports',
+        category: 'NFL Stadium',
         locUrl: ''
 },
 {
@@ -47,6 +47,10 @@ var locations = [{
 }];
 
 var markers = [];
+for (var i = 0; i < locations.length; i++) {
+        var wikiUrl = locations[i].locUrl;
+};
+//var locUrl = [];
 
 function LocationViewModel() {
 
@@ -67,34 +71,37 @@ function LocationViewModel() {
 
     // Listings that are outside the initiale zoom areas. This fits everything we want user to see.
     bounds = new google.maps.LatLngBounds();
-       
+    
     for (var i = 0; i < locations.length; i++) {
         var position = locations[i].location;
         var title = locations[i].title;
-        var category = locations[i].category;
+        var category = locations[i].category;  
         
         var wikiAPI = 'http://en.wikipedia.org/w/api.php?action=opensearch&search=' +title+ '&generator=allpages&gaplimit=max&prop=redirects&format=json&callback=wikiCallback';
         $.ajax({      
                 url: wikiAPI, 
                 dataType: "jsonp",
                 success: function( response ) {      
-                        var articleList = response[1];
+                        var articleList = response[3];
 
                         for (var i=0; i< articleList.length; i++) {
                                 articleStr = articleList[i];
-                                finalUrl = "http://en.wikipedia.org/wiki/" +articleStr;                                     
-                        }
-                        // Pass wikipedia link to array for each location title
-                        if (finalUrl.includes(locations.title)) {                         
-                        locations[i].locUrl.push(finalUrl)
-                        };                              
+                                var finalUrl = articleStr;
+                                console.log(finalUrl);
+
+                                // New callback function and lexical enviornment to push ajax response to array
+                                setTimeout(function(finalUrl, locations) {
+                                        // Pass wikipedia link to array for each location title
+                                        // if (finalUrl.includes(locations.title)) {                         
+                                        //         locations[i].locUrl.push(finalUrl)
+                                        // };
+                                }, 1000);
+                        }                             
                 },
                 error: function() {
                         alert("wikpedia resource failed to load !!!!!!!!");
                 }                       
         });
-
-        var wikiUrl = locations[i].locUrl;
 
         // Create a marker per location, and put into markers array.
         var marker = new google.maps.Marker({
@@ -108,7 +115,7 @@ function LocationViewModel() {
         });
 
         // Push the marker to our array of global markers.
-        markers.push(marker);        
+        markers.push(marker);
 
         // Extend boundaries of the map for each marker
         bounds.extend(marker.position);
@@ -128,13 +135,12 @@ function LocationViewModel() {
         // Check to make sure the infowindow is not already opened on this marker.
         if (infowindow.marker != marker) {
                 infowindow.marker = marker;
-                infowindow.setContent('<a href="'+marker.url+'">'+ marker.title + '</a>');                                                                       
+                infowindow.setContent('<a href="'+marker.url+'" target= "_blank">'+ marker.title + '</a>');                                                                       
                 infowindow.open(map, marker);
                 //Make sure the marker property is cleared if the infowindow is closed.
                 infowindow.addListener('closeclick',function() {
-                        infowindow.marker(null);
+                        infowindow.marker = null;
                 });
-
         }
     }
 
@@ -147,12 +153,16 @@ function LocationViewModel() {
     // currently selected category i.e default option
     self.selectedOption = ko.observable("All");
 
+//     // Pass wikipedia link to array for each location title
+//     if (finalUrl.includes(locations.title)) {                         
+//         locations[i].locUrl.push(finalUrl)
+//     };  
+
     // set up filtered list of locations using computed observables
     // this value gets updated if any of the observable its listening to changes
     // eg., selectedOption
     self.filteredLocations = ko.computed(function () {        
         var categories = self.selectedOption();
-
 
         if (categories === "All") {
                 markers.forEach(function (marker){
@@ -177,7 +187,6 @@ function LocationViewModel() {
     });
 // LocationViewModel Closing
 }
-
 // Allow data binds in View(indexko.html) to connect with our viewmodel(app.js)
 function initMap() {
         ko.applyBindings(new LocationViewModel())
