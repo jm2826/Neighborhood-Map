@@ -84,9 +84,19 @@ function LocationViewModel() {
 		// Extend boundaries of the map for each marker
 		bounds.extend(marker.position);
 		// Create an onclick event to open an infowindow at each marker.
+
 		marker.addListener('click', function() {
 			populateInfoWindow(this, largeInfowindow);
 		});
+
+		self.toggleBounce = ko.observable(function() {
+			if (marker.getAnimation() !== null) {
+			  marker.setAnimation(null);
+			} else {
+			  marker.setAnimation(google.maps.Animation.BOUNCE);
+			}
+		  });
+
 
 		// Tell map to fit itself to the boundaries set
 		map.fitBounds(bounds);
@@ -163,6 +173,7 @@ function LocationViewModel() {
 	});
 	// LocationViewModel Closing
 }
+
 // Allow data binds in View(indexko.html) to connect with our viewmodel(app.js)
 function initMap() {
 	ko.applyBindings(new LocationViewModel());
