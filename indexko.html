@@ -13,11 +13,10 @@
         <h5>Make A Selection to Filter Your Location: </h5>
         <select data-bind="options: dropdownOptions, value: selectedOption"></select>
         <ul data-bind="foreach: filteredLocations">
-            <li data-bind="text: title"></li>
-            
+            <li data-bind="text: title"></li>            
+    <button data-bind="click: $parent.toggleBounce, text: title"></button>
         </ul>
     </div>
-    <button data-bind="click: toggleBounce">Animate Markers</button>
        
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="js/lib/knockout-3.2.0.js"></script>
