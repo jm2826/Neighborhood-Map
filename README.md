@@ -10,8 +10,8 @@ Create a folder on our PC and save these all of these files to it from my github
 https://github.com/jm2826/Neighborhood-Map.git
 
 ## Quickstart
-* On your PC, search for Git Bash and open
-* Run(double-click) the indexko.html file.
+* Make sure your connected to the internet
+* Run(double-click) the indexko.html file from folder you saved my files.
 
 ## Resources Used
 * Knockout.JS
