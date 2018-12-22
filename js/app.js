@@ -90,12 +90,14 @@ function LocationViewModel() {
 	});
 
 	this.toggleBounce = function() {
+		markers.forEach (function (marker) {
 	  if (marker.getAnimation() !== null) {
 	    marker.setAnimation(null);
 	  } else {
 	    marker.setAnimation(google.maps.Animation.BOUNCE);
 	  }
-	};
+	})
+}
 
 	// Tell map to fit itself to the boundaries set
 	map.fitBounds(bounds);
